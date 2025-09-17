@@ -4,7 +4,7 @@ import Data.List
 -- Ordena uma lista de dados
 -- Passei muito tempo nessa, mas esqueci de salvar as versões falhas
 lstMenores :: [Float] -> Float -> [Float] -- Retorna uma lista com todos os elementos menores que o pivo
-lstMenores lst pivo = [x | x <- lst, x <= pivo]
+lstMenores lst pivo = [x | x <- lst, x < pivo]
 
 lstMaiores :: [Float] -> Float -> [Float] -- Retorna uma lista com todos os elementos maiores que o pivo
 lstMaiores lst pivo = [x | x <- lst, x >= pivo]
@@ -18,11 +18,15 @@ mediaData:: [Float] -> Float
 mediaData dataLst = (sum dataLst)/(fromIntegral $ length dataLst)
 
 -- Quick sort para uma lista de listas com tamanho das sublistas como parâmetro
-lstMenores
+lstlstMenores :: [[Float]] -> [Float] -> [[Float]]
+lstlstMenores lstLst pivo = [x | x <- lstLst, length x < length pivo]
+
+lstlstMaiores :: [[Float]] -> [Float] -> [[Float]]
+lstlstMaiores lstLst pivo = [x | x <- lstLst, length x >= length pivo]
 
 quickSortLst :: [[Float]] -> [[Float]]
 quickSortLst [] = []
-quickSortLst (pivo:lstLst) = quickSortLst 
+quickSortLst (pivo:lstLst) = quickSortLst (lstlstMenores lstLst pivo) ++ [pivo] ++ quickSortLst (lstlstMaiores lstLst pivo)
 
 -- Encontrar a mediana
 divideData :: Int -> Int -- Divide o tamanho da lista por dois (função pra melhorar a leitura)
@@ -46,11 +50,8 @@ medianData dataLst =
 agrupaRepetidos :: [Float] -> [[Float]] -- Cria uma lista de listas de números repetidos dentro dos dados sendo analisados. A lista está ordenada de maneira crescente
 agrupaRepetidos dataLst = group(quickSort dataLst)
 
-repetidosLst :: [[Float]] -> [Int] -- 
-repetidosLst dataLst = [length x | x <- dataLst]
-
-modaData :: [Float] -> Float
-modaData dataLst = agrupaRepetidos dataLst
+modaData :: [Float] -> Float -- Ordena os conjuntos de números repetidos e retorna o valor que tiver o maior grupo(a moda)
+modaData dataLst = last $ last $ quickSortLst $ agrupaRepetidos dataLst
 
 -- Calcular a variância
 
