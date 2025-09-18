@@ -26,7 +26,7 @@ lstlstMaiores lstLst pivo = [x | x <- lstLst, length x >= length pivo]
 
 quickSortLst :: [[Float]] -> [[Float]]
 quickSortLst [] = []
-quickSortLst (pivo:lstLst) = quickSortLst (lstlstMenores lstLst pivo) ++ [pivo] ++ quickSortLst (lstlstMaiores lstLst pivo)
+quickSortLst (pivo:lstLst) = quickSortLst (lstlstMaiores lstLst pivo) ++ [pivo] ++ quickSortLst (lstlstMenores lstLst pivo)
 
 -- Encontrar a mediana
 divideData :: Int -> Int -- Divide o tamanho da lista por dois (função pra melhorar a leitura)
@@ -50,8 +50,28 @@ medianData dataLst =
 agrupaRepetidos :: [Float] -> [[Float]] -- Cria uma lista de listas de números repetidos dentro dos dados sendo analisados. A lista está ordenada de maneira crescente
 agrupaRepetidos dataLst = group(quickSort dataLst)
 
-modaData :: [Float] -> Float -- Ordena os conjuntos de números repetidos e retorna o valor que tiver o maior grupo(a moda)
-modaData dataLst = last $ last $ quickSortLst $ agrupaRepetidos dataLst
+ordenaRepetidos :: [Float] -> [[Float]] -- Agrupa os dados repetidos e ordena os grupos decrescentemente por tamanho
+ordenaRepetidos dataLst = quickSortLst $ agrupaRepetidos dataLst
+
+contaModa :: [[Float]] -> Int -- Compara o primeiro item da lista(a moda) com os outros itens para ver quantas vezes seu tamanho se repete. Ou seja, verifica quantas vezes o tamanho da moda se repete
+contaModa dataLst = length [x | x <- dataLst, (length x) == (length $ head dataLst)]
+
+pegaNum :: [[Float]] -> Int-> [Float] -- Pega as N modas que foram calculadas anteriormente e retorna apenas o número de cada um dos grupos de repetições
+pegaNum dataLst numModas = map head $ take numModas dataLst
+
+tiposModa :: [[Float]] -> Int -> (String, [Float]) -- Os tipos de moda e retorna seus valores
+tiposModa dataLst numModas 
+    | (length dataLst) == numModas = ("Amodal", [])
+    | 1 == numModas = ("Unimodal", pegaNum dataLst numModas)
+    | 2 == numModas = ("Bimodal", pegaNum dataLst numModas)
+    | 2 < numModas && numModas < length dataLst = ("Multimodal", pegaNum dataLst numModas)
+    | otherwise = ("Erro nas Modas!", [])
+
+buscaModa :: [[Float]] -> (String, [Float]) -- Verifica quantas modas e qual o tipo de moda dos dados
+buscaModa dataLst = tiposModa dataLst $ contaModa dataLst
+
+modaData :: [Float] -> (String, [Float]) -- Recebe uma lista de dados e retorna suas modas e o tipo modal dos dados
+modaData dataLst = buscaModa (ordenaRepetidos dataLst)
 
 -- Calcular a variância
 
