@@ -83,4 +83,24 @@ modaData dataLst = buscaModa (ordenaRepetidos dataLst)
 
 -- Montar a tabela
 
+numClasses :: Int -> Int -- Calcula o número de grupos que a tabela de classes deve possuir
+numClasses numElem = ceiling $ sqrt $ fromIntegral numElem
+
+amplitudeData :: [Float] -> Float -- Retorna a amplitude total dos dados, contanto que os dados estejam ordenados
+amplitudeData dataLst = last dataLst - head dataLst
+
+intervaloClasses :: Float -> Int -> Int -- Retorna o tamanho dos intervalos das classes
+intervaloClasses amplit numClass = ceiling $ amplit/(fromIntegral numClass)
+
+criaClasses :: [(Float, Float)] -> Int -> Int -> [(Float, Float)]
+criaClasses lstClass numClass intervaloTam = if (length lstClass <= numClass) 
+    then criaClasses[(fst lstClass, fst lstClass+intervaloTam)] 
+    else lstClass
+
+montaTabela :: [Float] -> Int -> [(Float, Float)]
+montaTabela dataLst numClass = criaClasses [(head dataLst, 0)] numClass $ intervaloClasses (amplitudeData dataLst) numClass
+
+imprimeTabela :: [Float] -> Int
+imprimeTabela dataLst = montaTabela (quickSort dataLst) (numClasses $ length dataLst)
+
 -- Função Main
