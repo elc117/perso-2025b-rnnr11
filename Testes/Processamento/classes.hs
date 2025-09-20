@@ -98,7 +98,10 @@ thrd (_, _, x) = x
 
 contaFreqs :: Int -> Float -> Float -> [Float] -> Int
 contaFreqs contador lowerLim upperLim (x:dataLst)
-    | x < upperLim = contaFreqs (contador+1) lowerLim upperLim dataLst
+    | x < upperLim && x >= lowerLim = if null dataLst 
+        then contador+1 
+        else contaFreqs (contador+1) lowerLim upperLim dataLst
+    | x < upperLim && x < lowerLim = contaFreqs contador lowerLim upperLim dataLst
     | otherwise = contador
 
 insertClass :: [(Float, Float, Int)] -> Float -> [Float] -> [(Float, Float, Int)] -- Soma o intervalo e insere a nova classe na lista de classes
