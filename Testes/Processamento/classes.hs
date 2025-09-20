@@ -1,5 +1,9 @@
-
 import Data.List
+
+-- Como todo o programa consiste em analisar os dados de uma lista de float, não ainda não há necessidade de um código de teste. Tudo até agora foi testado através do GHCI
+-- Para facilitar meu trabalho e registrar aqui, vou lançar abaixo a definição da lista que eu vou usar para testar as funções no GHCI
+-- lst = [31, 41, 47, 53, 57, 61, 65, 67, 73, 35, 41, 48, 54, 59, 64, 66, 68, 73, 35, 42, 50, 55, 60, 65, 66, 69, 74]
+-- OBS: Já estava fazendo isso, mas só agora percebi que eu deveria colocar ao menos uma nota sobre
 
 -- Ordena uma lista de dados
 -- Passei muito tempo nessa, mas esqueci de salvar as versões falhas
@@ -50,7 +54,7 @@ medianData dataLst =
 agrupaRepetidos :: [Float] -> [[Float]] -- Cria uma lista de listas de números repetidos dentro dos dados sendo analisados. A lista está ordenada de maneira crescente
 agrupaRepetidos dataLst = group(quickSort dataLst)
 
-ordenaRepetidos :: [Float] -> [[Float]] -- Agrupa os dados repetidos e ordena os grupos decrescentemente por tamanho
+ordenaRepetidos :: [Float] -> [[Float]] -- Agrupa os dados repetidos e ordena os grupos em ordem de tamanho decrescente
 ordenaRepetidos dataLst = quickSortLst $ agrupaRepetidos dataLst
 
 contaModa :: [[Float]] -> Int -- Compara o primeiro item da lista(a moda) com os outros itens para ver quantas vezes seu tamanho se repete. Ou seja, verifica quantas vezes o tamanho da moda se repete
@@ -83,6 +87,27 @@ modaData dataLst = buscaModa (ordenaRepetidos dataLst)
 
 -- Montar a tabela
 
+frst :: (a, b, c) -> a -- As funções abaixo são para retirar elementos das tuplas, já que haskell só disponibiliza funções para manipular pares.
+frst (x, _, _) = x
+
+scnd :: (a, b, c) -> b
+scnd (_, x, _) = x
+
+thrd :: (a, b, c) -> c
+thrd (_, _, x) = x
+
+contaFreqs :: Int -> Float -> Float -> [Float] -> Int
+contaFreqs contador lowerLim upperLim (x:dataLst)
+    | x < upperLim = contaFreqs (contador+1) lowerLim upperLim dataLst
+    | otherwise = contador
+
+insertClass :: [(Float, Float, Int)] -> Float -> [Float] -> [(Float, Float, Int)] -- Soma o intervalo e insere a nova classe na lista de classes
+insertClass lstClass intervalo dataLst = lstClass ++ [(lowerLim, upperLim, freq)]
+    where 
+        lowerLim = scnd $ last lstClass
+        upperLim = lowerLim+intervalo
+        freq = contaFreqs 0 lowerLim upperLim dataLst
+
 numClasses :: Int -> Int -- Calcula o número de grupos que a tabela de classes deve possuir
 numClasses numElem = ceiling $ sqrt $ fromIntegral numElem
 
@@ -92,15 +117,20 @@ amplitudeData dataLst = last dataLst - head dataLst
 intervaloClasses :: Float -> Int -> Int -- Retorna o tamanho dos intervalos das classes
 intervaloClasses amplit numClass = ceiling $ amplit/(fromIntegral numClass)
 
-criaClasses :: [(Float, Float)] -> Int -> Int -> [(Float, Float)]
-criaClasses lstClass numClass intervaloTam = if (length lstClass <= numClass) 
-    then criaClasses[(fst lstClass, fst lstClass+intervaloTam)] 
-    else lstClass
+criaClasses :: [(Float, Float, Int)] -> Int -> Int -> [Float] -> [(Float, Float, Int)]
+criaClasses lstClass numClass intervalo dataLst
+    | length lstClass >= numClass = lstClass
+    | otherwise = criaClasses (insertClass lstClass (fromIntegral intervalo) dataLst) numClass intervalo dataLst
 
-montaTabela :: [Float] -> Int -> [(Float, Float)]
-montaTabela dataLst numClass = criaClasses [(head dataLst, 0)] numClass $ intervaloClasses (amplitudeData dataLst) numClass
+montaTabela :: [Float] -> Int -> [(Float, Float, Int)]
+montaTabela dataLst numClass =
+    let intervalo = intervaloClasses (amplitudeData dataLst) numClass
+        lowerLim = head dataLst
+        upperLim = head dataLst+(fromIntegral intervalo)
+    in criaClasses [(lowerLim, upperLim, (contaFreqs 0 lowerLim upperLim dataLst))] numClass intervalo dataLst
 
-imprimeTabela :: [Float] -> Int
+
+imprimeTabela :: [Float] -> [(Float, Float, Int)]
 imprimeTabela dataLst = montaTabela (quickSort dataLst) (numClasses $ length dataLst)
 
 -- Função Main
