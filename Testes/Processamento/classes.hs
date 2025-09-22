@@ -73,26 +73,43 @@ medianData :: [(Float, Float, Int)] -> Float -- Retorna a mediana de uma lista d
 medianData dataTable = medianCalc dataTable $ summaFreqs dataTable 
 
 -- Encontrar a moda
-maiorFreq :: [Int] -> Int -> Int -> Int -- Retorna a maior frequência da lista de inteiros
-maiorFreq [] rtrnLst index = index-1
-maiorFreq (x:freqLst) rtrnFreq index
-    | rtrnFreq > x = maiorFreq freqLst rtrnFreq (index+1)
-    | otherwise = maiorFreq freqLst x (index+1)
+maiorFreq :: [Int] -> Int -> (Int, Int) -> Int -- Retorna a maior frequência da lista de inteiros
+maiorFreq [] compFreq (index, maior) = maior-1
+maiorFreq (x:freqLst) compFreq (index, maior)
+    | compFreq <= x = maiorFreq freqLst x (index+1, index)
+    | otherwise = maiorFreq freqLst compFreq (index+1, maior)
 
 modalClass :: [(Float, Float, Int)] -> Int -- Retorna o indice da classe modal
-modalClass dataTable = maiorFreq freqLst 0 0
+modalClass dataTable = maiorFreq freqLst 0 (1, 1)
     where
         freqLst = [z | (x, y, z) <- dataTable]
 
-modaData :: [(Float, Float, Int)] -> Int -- Recebe uma lista de dados e retorna suas modas e o tipo modal dos dados
-modaData dataTable = 0 
+calcModa :: (Float, Float, Int) -> (Float, Float, Int) -> (Float, Float, Int) -> Float
+calcModa antClass classModal posClass = infLim + ((freqModal - antFreq)/(2*freqModal - antFreq - posFreq)) * amplit
+    where
+        infLim = frst classModal -- Limite inferior da classe 
+        freqModal = fromIntegral $ thrd classModal -- Frequência da classe
+        antFreq = fromIntegral $ thrd antClass -- Frequência da classe anterior
+        posFreq = fromIntegral $ thrd posClass -- Frequência da classe posterior
+        amplit = (scnd classModal) - (frst classModal) -- Amplitude de cada classe
+
+modaData :: [(Float, Float, Int)] -> Float -- Recebe uma lista de dados e retorna suas modas e o tipo modal dos dados
+modaData dataTable = calcModa antClass classModal posClass
     where
     -- Aqui é o mesmo caso da mediana. A fórmula vai ficar muito confusa, então vou descrever tudo dentro de um where
-        classIndex = modalClass dataTable
-        classModal = dataTable !! classIndex
+        classIndex = modalClass dataTable 
+        classModal = dataTable !! classIndex -- Classe onde a moda está 
+        antClass = if classIndex > 0 then dataTable !! (classIndex-1) else (0, 0, 0) -- Classe anterior à modal
+        posClass = if classIndex < (length dataTable-1) then dataTable !! (classIndex+1) else (0, 0, 0)  -- Classe posterior à modal
         
- 
 -- Calcular a variância
+tableSub :: [(Float, Float, Int)] -> Float -> 
+tableSub dataTable media = map (mediaPoint) dataTable
+
+varData :: [(Float, Float, Int)] -> Float
+varData dataTable = 0  
+    where
+        media = mediaData dataTable
 
 -- Calcular o desvio padrão
 
