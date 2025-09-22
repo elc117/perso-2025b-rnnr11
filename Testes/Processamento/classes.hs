@@ -1,5 +1,3 @@
-import Data.List
-
 -- Como todo o programa consiste em analisar os dados de uma lista de float, não ainda não há necessidade de um código de teste. Tudo até agora foi testado através do GHCI
 -- Para facilitar meu trabalho e registrar aqui, vou lançar abaixo a definição da lista que eu vou usar para testar as funções no GHCI
 -- lst = [31, 41, 47, 53, 57, 61, 65, 67, 73, 35, 41, 48, 54, 59, 64, 66, 68, 73, 35, 42, 50, 55, 60, 65, 66, 69, 74]
@@ -30,12 +28,28 @@ scnd (_, x, _) = x
 
 thrd :: (a, b, c) -> c
 thrd (_, _, x) = x
+
+sqre :: Float -> Float
+sqre x = x*x
 --------------------------------------------------------------
 
 -- Funções de Frequência --
-summaFreqs :: [(Float, Float, Int)] -> Int
+summaFreqs :: [(Float, Float, Int)] -> Int -- Soma todas as frequências da tabela
 summaFreqs dataTable = sum $ map (thrd) dataTable
 
+calcRel :: Float -> Int -> Float -- Calcula a frequência relativa de uma classe
+calcRel freq sumFreqs = freq/(fromIntegral sumFreqs)
+
+freqRel :: [(Float, Float, Int)] -> [Float] -- Retorna uma lista de frequências relativas
+freqRel dataTable = map ((\x -> calcRel x $ summaFreqs dataTable)) [fromIntegral z | (x, y, z) <- dataTable]
+
+freqRelCent :: [Float] -> [Int] -- Retorna uma lista de frequências relativas percentuais
+freqRelCent freqLst = map (\x -> round (x*100)) freqLst
+
+freqAcc :: Num a => [a] -> a -> [a] -> [a] -- Retorna uma lista de frequências acumuladas
+freqAcc (x:freqLst) acc lst 
+    | null freqLst = lst ++ [acc+x]
+    | otherwise = freqAcc freqLst (acc+x) (lst ++ [acc+x])
 --------------------------------------------------------------
 
 -- Calcular a média
@@ -84,7 +98,7 @@ modalClass dataTable = maiorFreq freqLst 0 (1, 1)
     where
         freqLst = [z | (x, y, z) <- dataTable]
 
-calcModa :: (Float, Float, Int) -> (Float, Float, Int) -> (Float, Float, Int) -> Float
+calcModa :: (Float, Float, Int) -> (Float, Float, Int) -> (Float, Float, Int) -> Float -- Aplica a fórmula de cálculo de moda
 calcModa antClass classModal posClass = infLim + ((freqModal - antFreq)/(2*freqModal - antFreq - posFreq)) * amplit
     where
         infLim = frst classModal -- Limite inferior da classe 
@@ -103,17 +117,24 @@ modaData dataTable = calcModa antClass classModal posClass
         posClass = if classIndex < (length dataTable-1) then dataTable !! (classIndex+1) else (0, 0, 0)  -- Classe posterior à modal
         
 -- Calcular a variância
-tableSub :: [(Float, Float, Int)] -> Float -> 
-tableSub dataTable media = map (mediaPoint) dataTable
+classSub :: (Float, Float, Int) -> Float -> Float -- Faz a operação que está no somatório
+classSub classMedia media = fromIntegral (thrd classMedia) * (sqre $ (mediaPoint classMedia) - media)
+
+tableSoma :: [(Float, Float, Int)] -> Float -> Float -- Retorna o somatório do numerador
+tableSoma dataTable media = sum $ map (\x -> classSub x media) dataTable
 
 varData :: [(Float, Float, Int)] -> Float
-varData dataTable = 0  
+varData dataTable = (tableSoma dataTable media)/den
     where
         media = mediaData dataTable
+        den = fromIntegral $ (summaFreqs dataTable)-1 -- Esse -1 pode sumir se for uma população. 
 
--- Calcular o desvio padrão
+-- Calcular o desvio padrão e coeficiente de variação
+desvioData :: [(Float, Float, Int)] -> Float
+desvioData dataTable = sqrt $ varData dataTable
 
--- Calcular o coeficiente de variação
+cvData :: [(Float, Float, Int)] -> Float
+cvData dataTable = (desvioData dataTable)/(mediaData dataTable)
 
 -- Criação da Tabela de Classes --
 contaFreqs :: Int -> Float -> Float -> [Float] -> Int -- Conta as frequências com que cada classe aparece no conjunto de dados
