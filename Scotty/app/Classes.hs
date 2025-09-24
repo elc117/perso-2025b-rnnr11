@@ -7,6 +7,8 @@
 -- ou
 -- table = [(72, 86, 6), (86, 100, 6), (100, 114, 10), (114, 128, 5), (128, 142, 2), (142, 156, 1)]
 
+module Classes where
+
 -- Funções Auxiliares --
 -- Ordena uma lista de dados
 -- Passei muito tempo nessa, mas esqueci de salvar as versões falhas
