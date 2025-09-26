@@ -69,7 +69,8 @@ executable Trab
     -- Other library packages from which modules are imported.
     build-depends:    base ^>=4.18.3.0, 
                       scotty,
-                      text
+                      text,
+                      sqlite-simple
 
     -- Directories containing source files.
     hs-source-dirs:   app, src
