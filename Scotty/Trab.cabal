@@ -85,9 +85,9 @@ test-suite TrabTest
     
     hs-source-dirs: test, src
     
-    build-depends: base>=4.7 && <5, HUnit, scotty
+    build-depends: base>=4.7 && <5, scotty, sqlite-simple, HUnit
     
-    other-modules: Server, Classes
+    other-modules: Classes
     
     default-language: Haskell2010
 

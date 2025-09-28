@@ -24,20 +24,9 @@ thrd (_, _, x) = x
 
 sqre :: Float -> Float
 sqre x = x*x
---------------------------------------------------------------
 
--- Funções de Frequência --
 summaFreqs :: [(Float, Float, Int)] -> Int -- Soma todas as frequências da tabela
 summaFreqs dataTable = sum $ map (thrd) dataTable
-
-calcRel :: Float -> Int -> Float -- Calcula a frequência relativa de uma classe
-calcRel freq sumFreqs = freq/(fromIntegral sumFreqs)
-
-freqRel :: [(Float, Float, Int)] -> [Float] -- Retorna uma lista de frequências relativas
-freqRel dataTable = map ((\x -> calcRel x $ summaFreqs dataTable)) [fromIntegral z | (x, y, z) <- dataTable]
-
-freqRelCent :: [Float] -> [Int] -- Retorna uma lista de frequências relativas percentuais
-freqRelCent freqLst = map (\x -> round (x*100)) freqLst
 
 freqAcc :: Num a => [a] -> a -> [a] -> [a] -- Retorna uma lista de frequências acumuladas
 freqAcc (x:freqLst) acc lst 
@@ -100,10 +89,11 @@ calcModa antClass classModal posClass = infLim + ((freqModal - antFreq)/(2*freqM
         posFreq = fromIntegral $ thrd posClass -- Frequência da classe posterior
         amplit = (scnd classModal) - (frst classModal) -- Amplitude de cada classe
 
-undefModa :: [(Float, Float, Int)] -> Int -> Int -> Int Tu vaga pelos c-> Bool
-undefModa [] numModa modaIndex index = True
-undefModa dataTable numModa modaIndex index = if (index /= modaIndex && numModa == thrd (dataTable !! index)) then False 
-    else undefModa dataTable numModa modaIndex (index+1)
+undefModa :: [(Float, Float, Int)] -> Int -> Int -> Int -> Bool
+undefModa dataTable numModa modaIndex index
+    | index >= length dataTable = True
+    | index /= modaIndex && numModa == thrd (dataTable !! index) = False 
+    | otherwise = undefModa dataTable numModa modaIndex (index+1)
 
 modaData :: [(Float, Float, Int)] -> Maybe Float -- Recebe uma lista de dados e retorna suas modas e o tipo modal dos dados
 modaData dataTable = if undefModa dataTable (thrd classModal) classIndex 0 then Just $ calcModa antClass classModal posClass else Nothing
