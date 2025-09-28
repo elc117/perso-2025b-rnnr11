@@ -1,3 +1,6 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/7NMOLXjY)
+Autor: João Pedro de Quadros Martins - Sistemas de Informação
+# A Proposta
+O objetivo desse trabalho foi a implementação da construção de uma tabela de dados agrupados em classes e cálculo de algumas das medidas descritivas para esses dados. A implementação foi feita de maneira abstrata, de modo que as impressões dos dados não tiveram a intenção de serem especialmente chamativas, apenas funcionais para uma possível aplicação frontend.
+
 
 http://www.haskell.org/hoogle/
