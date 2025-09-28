@@ -1,12 +1,3 @@
--- Como todo o programa consiste em analisar os dados de uma lista de float, não ainda não há necessidade de um código de teste. Tudo até agora foi testado através do GHCI
--- Para facilitar meu trabalho e registrar aqui, vou lançar abaixo a definição da lista que eu vou usar para testar as funções no GHCI
--- lst = [31, 41, 47, 53, 57, 61, 65, 67, 73, 35, 41, 48, 54, 59, 64, 66, 68, 73, 35, 42, 50, 55, 60, 65, 66, 69, 74]
--- OBS: Já estava fazendo isso, mas só agora percebi que eu deveria colocar ao menos uma nota sobre
--- Esse é o comando que vou usar para testar as funções de cálculo que precisam da tabela pronta
--- table = [(31.0,39.0,3),(39.0,47.0,3),(47.0,55.0,5),(55.0,63.0,5),(63.0,71.0,8),(71.0,79.0,3)]
--- ou
--- table = [(72, 86, 6), (86, 100, 6), (100, 114, 10), (114, 128, 5), (128, 142, 2), (142, 156, 1)]
-
 module Classes where
 
 -- Funções Auxiliares --
@@ -73,20 +64,20 @@ medianClass (x:dataTable) freq index medianPos
     | medianPos > freq+(thrd x) = medianClass dataTable (freq+(thrd x)) (index+1) medianPos
     | otherwise = (index, fromIntegral freq)
 
-medianCalc :: [(Float, Float, Int)] -> Int -> Float
-medianCalc dataTable totalFreq = infLim+(((fromIntegral $ halfFreq) - acumulFreq)/freqClass)*amplit
+medianCalc :: [(Float, Float, Int)] -> Float -> Float
+medianCalc dataTable totalFreq = infLim+((halfFreq - acumulFreq)/freqClass)*amplit
     where 
-        medianReturn = medianClass dataTable 0 0 halfFreq
+        medianReturn = medianClass dataTable 0 0 (ceiling halfFreq)
         medClass = dataTable !! (fst medianReturn) -- pegando o item da lista de tuplas através do indice retornado em "medianReturn"
         -- Como a fórmula da mediana em dados agrupados é um pouco confusa escrita em linha de código, vou deixar
         infLim = frst medClass -- limite inferior da classe
         freqClass = fromIntegral $ thrd medClass -- frequência da classe
-        halfFreq = div totalFreq 2 -- metade da frequência
+        halfFreq = totalFreq/2 -- metade da frequência
         acumulFreq = snd medianReturn -- soma das frequências anteriores às da classe
         amplit = (scnd medClass) - (frst medClass) -- Amplitude da classe
 
 medianData :: [(Float, Float, Int)] -> Float -- Retorna a mediana de uma lista de numeros
-medianData dataTable = medianCalc dataTable $ summaFreqs dataTable 
+medianData dataTable = medianCalc dataTable $ fromIntegral $ summaFreqs dataTable 
 
 -- Encontrar a moda
 maiorFreq :: [Int] -> Int -> (Int, Int) -> Int -- Retorna a maior frequência da lista de inteiros
@@ -109,15 +100,20 @@ calcModa antClass classModal posClass = infLim + ((freqModal - antFreq)/(2*freqM
         posFreq = fromIntegral $ thrd posClass -- Frequência da classe posterior
         amplit = (scnd classModal) - (frst classModal) -- Amplitude de cada classe
 
-modaData :: [(Float, Float, Int)] -> Float -- Recebe uma lista de dados e retorna suas modas e o tipo modal dos dados
-modaData dataTable = calcModa antClass classModal posClass
+undefModa :: [(Float, Float, Int)] -> Int -> Int -> Int Tu vaga pelos c-> Bool
+undefModa [] numModa modaIndex index = True
+undefModa dataTable numModa modaIndex index = if (index /= modaIndex && numModa == thrd (dataTable !! index)) then False 
+    else undefModa dataTable numModa modaIndex (index+1)
+
+modaData :: [(Float, Float, Int)] -> Maybe Float -- Recebe uma lista de dados e retorna suas modas e o tipo modal dos dados
+modaData dataTable = if undefModa dataTable (thrd classModal) classIndex 0 then Just $ calcModa antClass classModal posClass else Nothing
     where
     -- Aqui é o mesmo caso da mediana. A fórmula vai ficar muito confusa, então vou descrever tudo dentro de um where
         classIndex = modalClass dataTable 
         classModal = dataTable !! classIndex -- Classe onde a moda está 
         antClass = if classIndex > 0 then dataTable !! (classIndex-1) else (0, 0, 0) -- Classe anterior à modal
         posClass = if classIndex < (length dataTable-1) then dataTable !! (classIndex+1) else (0, 0, 0)  -- Classe posterior à modal
-        
+
 -- Calcular a variância
 classSub :: (Float, Float, Int) -> Float -> Float -- Faz a operação que está no somatório
 classSub classMedia media = fromIntegral (thrd classMedia) * (sqre $ (mediaPoint classMedia) - media)

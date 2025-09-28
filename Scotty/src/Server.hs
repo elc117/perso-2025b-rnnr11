@@ -35,5 +35,4 @@ normalGet dataLst = (media, var)
         media = mediaData dataTable
         var = varData dataTable media
 
--- Chamada completa
-allGet :: [Float] -> 
+-- Frequências
