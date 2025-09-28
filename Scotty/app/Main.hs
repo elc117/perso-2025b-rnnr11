@@ -13,9 +13,9 @@ main = scotty 3000 $ do
         dados <- liftIO requestData 
         text $ TL.pack $ (show (mmmGet dados) ++ "\n")
 
-    get "/desviocv" $ do
+    get "/desviocvar" $ do
         dados <- liftIO requestData
-        text $ TL.pack $ (show (desvioCVGet dados) ++ "\n")
+        text $ TL.pack $ (show (desvioCVarGet dados) ++ "\n")
 
     get "/normal" $ do
         dados <- liftIO requestData
