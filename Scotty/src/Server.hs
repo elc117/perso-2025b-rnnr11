@@ -1,13 +1,9 @@
-{-# LANGUAGE OverloadedStrings #-}
 
 module Server where
 
 import Classes
-import Web.Scotty
-import qualified Data.Text.Lazy as TL
-
-lst :: [Float]
-lst = [31, 41, 47, 53, 57, 61, 65, 67, 73, 35, 41, 48, 54, 59, 64, 66, 68, 73, 35, 42, 50, 55, 60, 65, 66, 69, 74] -- Essa constante é pra verificar se os cálculos estão sendo operados, seja corretamente ou não
+import Data.Maybe 
+import Text.Read (readMaybe)
 
 -- Media, moda ou mediana
 mmmGet :: [Float] -> (Float, Float, Float) -- (Media, moda, mediana)
@@ -15,7 +11,7 @@ mmmGet dataLst = (med, moda, medi)
     where
         dataTable = retornaTabela dataLst
         med = mediaData dataTable
-        moda = modaData dataTable
+        moda = fromMaybe 0 $ modaData dataTable
         medi = medianData dataTable
 
 -- Desvio padrão e Coeficiente de Variação
@@ -25,7 +21,7 @@ desvioCVGet dataLst = (dp, cv)
         dataTable = retornaTabela dataLst
         media = mediaData dataTable
         dp = desvioData dataTable $ varData dataTable media 
-        cv = cvData dataTable media
+        cv = cvData dataTable dp media
 
 -- Dados de distribuição normal
 normalGet :: [Float] -> (Float, Float)
@@ -35,4 +31,12 @@ normalGet dataLst = (media, var)
         media = mediaData dataTable
         var = varData dataTable media
 
--- Frequências
+-- Retorna a tabela
+tabelaGet :: [Float] -> [(Float, Float, Int)]
+tabelaGet dataLst = retornaTabela dataLst
+
+requestData :: IO [Float]
+requestData = do
+    content <- readFile "app/input.txt"
+    let dataLst = map read (words content) :: [Float]
+    return dataLst

@@ -30,6 +30,16 @@
   (major1) == 0 && (major2) <  22 || \
   (major1) == 0 && (major2) == 22 && (minor) <= 0)
 #endif /* MIN_VERSION_scotty */
+/* package sqlite-simple-0.4.19.0 */
+#ifndef VERSION_sqlite_simple
+#define VERSION_sqlite_simple "0.4.19.0"
+#endif /* VERSION_sqlite_simple */
+#ifndef MIN_VERSION_sqlite_simple
+#define MIN_VERSION_sqlite_simple(major1,major2,minor) (\
+  (major1) <  0 || \
+  (major1) == 0 && (major2) <  4 || \
+  (major1) == 0 && (major2) == 4 && (minor) <= 19)
+#endif /* MIN_VERSION_sqlite_simple */
 /* package text-2.0.2 */
 #ifndef VERSION_text
 #define VERSION_text "2.0.2"
