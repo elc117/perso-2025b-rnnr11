@@ -97,6 +97,8 @@ Num geral, evitei utilizar exemplos extraídos diretamente de inteligência arti
 No fim, o que pensei que seria meu maior problema, acabou sendo a parte mais tranquila. O exemplo de Scotty dado em aula foi a minha base, e apenas isso já foi o suficiente para a criação das rotas.
 
 # O Resultado
-Apesar do meu desconforto com Haskell, foi divertido desenvolver esse trabalho, mesmo que ele seja algo simples. Bem, esse foi o resultado final:
+Apesar do meu desconforto com Haskell, foi divertido desenvolver esse trabalho, mesmo que ele seja algo simples. Bem, esse foi o [resultado final](trabHaskell.mp4)
 
+# Referências
 http://www.haskell.org/hoogle/
+# Prompts Referência
