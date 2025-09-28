@@ -14,13 +14,14 @@ mmmGet dataLst = (med, moda, medi)
         moda = fromMaybe 0 $ modaData dataTable
         medi = medianData dataTable
 
--- Desvio padrão e Coeficiente de Variação
-desvioCVGet :: [Float] -> (Float, Float) -- (Desvio Padrão, coeficiente de variação)
-desvioCVGet dataLst = (dp, cv)
+-- Variância, Desvio padrão e Coeficiente de Variação
+desvioCVarGet :: [Float] -> (Float, Float, Float) -- (Desvio Padrão, coeficiente de variação)
+desvioCVarGet dataLst = (var, dp, cv)
     where
         dataTable = retornaTabela dataLst
         media = mediaData dataTable
-        dp = desvioData dataTable $ varData dataTable media 
+        var = varData dataTable media
+        dp = desvioData dataTable var 
         cv = cvData dataTable dp media
 
 -- Dados de distribuição normal
@@ -37,6 +38,6 @@ tabelaGet dataLst = retornaTabela dataLst
 
 requestData :: IO [Float]
 requestData = do
-    content <- readFile "app/input.txt"
+    content <- readFile "input.txt"
     let dataLst = map read (words content) :: [Float]
     return dataLst
