@@ -106,6 +106,8 @@ No fim, o que pensei que seria meu maior problema, acabou sendo a parte mais tra
 Apesar do meu desconforto com Haskell, foi divertido desenvolver esse trabalho, mesmo que ele seja algo simples. Bem, esse foi o [resultado final](trabHaskell.mp4).
 
 # Referências
+OBS: As aulas de estatística foram minha fonte para os cálculos, então inseri a bibliografia da disciplina como referência.
+
 HASKELL. Hoogle. Disponível em: http://www.haskell.org/hoogle/. Acesso em: 28 set. 2025.
 
 DAWSON, N. Unraveling Quicksort: the fast and versatile sorting algorithm. Medium, 2020. Disponível em: https://medium.com/@nathaldawson/unraveling-quicksort-the-fast-and-versatile-sorting-algorithm-2c1214755ce9. Acesso em: 28 set. 2025.
@@ -114,6 +116,15 @@ HASKELL. Scotty 0.22. Hackage, 2025. Disponível em: https://hackage.haskell.org
 
 SQLITE. SQLite CLI. Disponível em: https://sqlite.org/cli.html. Acesso em: 28 set. 2025.
 
+FONSECA, J. S. F. Curso de estatística. 6. ed. São Paulo: Atlas, 1996. 320 p.
+
+ANGELINI, F.; MILONE, G. Estatística geral. São Paulo: Atlas, 1993.
+
+COSTA NETO, P. L. O. Estatística. São Paulo: Edgard Blücher, 1987. 264 p.
+
+SPIEGEL, M. R. Estatística. São Paulo: McGraw-Hill do Brasil, 1971. 580 p.
+
+WALLIS, W. A.; ROBERTS, H. V. Curso de estatística. Rio de Janeiro: Fundo de Cultura, 1964. 2 v.
 # Prompts Referência
 Prompt: 
 Me explique como funciona "let in" em haskell
