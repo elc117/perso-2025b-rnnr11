@@ -107,9 +107,13 @@ Apesar do meu desconforto com Haskell, foi divertido desenvolver esse trabalho, 
 
 # Referências
 HASKELL. Hoogle. Disponível em: http://www.haskell.org/hoogle/. Acesso em: 28 set. 2025.
+
 DAWSON, N. Unraveling Quicksort: the fast and versatile sorting algorithm. Medium, 2020. Disponível em: https://medium.com/@nathaldawson/unraveling-quicksort-the-fast-and-versatile-sorting-algorithm-2c1214755ce9. Acesso em: 28 set. 2025.
+
 HASKELL. Scotty 0.22. Hackage, 2025. Disponível em: https://hackage.haskell.org/package/scotty-0.22#readme. Acesso em: 28 set. 2025.
+
 SQLITE. SQLite CLI. Disponível em: https://sqlite.org/cli.html. Acesso em: 28 set. 2025.
+
 # Prompts Referência
 Prompt: 
 Me explique como funciona "let in" em haskell
