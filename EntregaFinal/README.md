@@ -126,6 +126,8 @@ SPIEGEL, M. R. Estatística. São Paulo: McGraw-Hill do Brasil, 1971. 580 p.
 
 WALLIS, W. A.; ROBERTS, H. V. Curso de estatística. Rio de Janeiro: Fundo de Cultura, 1964. 2 v.
 # Prompts Referência
+OBS: São apenas alguns deles, a fim de exemplificar o tipo de consulta realizada.
+
 Prompt: 
 Me explique como funciona "let in" em haskell
 (Usei para entender como "let" e "in" funcionavam de maneira rápida e com mais precisão. Também acabei entendendo "where" com esse prompt)
