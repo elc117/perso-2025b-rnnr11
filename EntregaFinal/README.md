@@ -1,5 +1,6 @@
 Autor: João Pedro de Quadros Martins - Sistemas de Informação
 Caminhos de Entrega:
+
 Cálculos Descritivos -> ./Scotty/src/Classes.hs
 
 Chamadas de Rota -> ./Scotty/src/Server.hs
