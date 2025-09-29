@@ -93,12 +93,37 @@ Essa foi primeira a versão funcional de inserção em banco de dados via códig
 Ademais, a única função do banco de dados aqui foi para aprendizado próprio. Persistência não era algo exatamente necessário para o trabalho que foi proposto, mas escolhi tentar lidar com SQL para armazenar os dados de teste ao invés de fugir pra velha leitura em .txt. 
 
 Num geral, evitei utilizar exemplos extraídos diretamente de inteligência artificial, mas os exemplos dados pelos meus prompts de debug acabaram sendo minha principal fonte de entendimento. Muitos dos recursos aprendi a usar vendo códigos dados pela IA, como foi o caso de "let" e "where", mas tentei ao máximo não copiar diretamente o que me era dado, tanto para evitar plágio, quanto evitar o uso de muitas referências. Alguns dos prompts vão estar no final do relatório.
+Apesar disso, houve uma estrutura que foi gerada quase totalmente por IA:
+```
+if abs (0.032380832 - 3.238032e-2) < 1e-6 then putStrLn("Sim") else putStrLn("Não")
+```
+Especificamente, esse método de comparação de números em ponto flutuante, a fim de verificar uma "quase igualdade". Basicamente, consiste em retornar o módulo da diferença e comparar com um certo nível de tolerância. No meu caso, foi 1e-6. Apesar de ter sido gerado por IA, acabei perdendo o prompt no meio de uma chat temporário, então não lembro exatamente como acabei chegando nessa resposta.
+Apliquei esse método para garantir que os testes não cairiam em erro por causa de valores muito pequenos e desprezíveis.
 
 No fim, o que pensei que seria meu maior problema, acabou sendo a parte mais tranquila. O exemplo de Scotty dado em aula foi a minha base, e apenas isso já foi o suficiente para a criação das rotas.
 
 # O Resultado
-Apesar do meu desconforto com Haskell, foi divertido desenvolver esse trabalho, mesmo que ele seja algo simples. Bem, esse foi o [resultado final](trabHaskell.mp4)
+Apesar do meu desconforto com Haskell, foi divertido desenvolver esse trabalho, mesmo que ele seja algo simples. Bem, esse foi o [resultado final](trabHaskell.mp4).
 
 # Referências
-http://www.haskell.org/hoogle/
+HASKELL. Hoogle. Disponível em: http://www.haskell.org/hoogle/. Acesso em: 28 set. 2025.
+DAWSON, N. Unraveling Quicksort: the fast and versatile sorting algorithm. Medium, 2020. Disponível em: https://medium.com/@nathaldawson/unraveling-quicksort-the-fast-and-versatile-sorting-algorithm-2c1214755ce9. Acesso em: 28 set. 2025.
+HASKELL. Scotty 0.22. Hackage, 2025. Disponível em: https://hackage.haskell.org/package/scotty-0.22#readme. Acesso em: 28 set. 2025.
+SQLITE. SQLite CLI. Disponível em: https://sqlite.org/cli.html. Acesso em: 28 set. 2025.
 # Prompts Referência
+Prompt: 
+Me explique como funciona "let in" em haskell
+(Usei para entender como "let" e "in" funcionavam de maneira rápida e com mais precisão. Também acabei entendendo "where" com esse prompt)
+
+Prompt: 
+Em Haskell, o que acontece se, num argumento de lista(x:xs), eu passar uma lista vazia?
+(Tive problemas em resolver a falta de tratamento de lista vazia em uma função recursiva)
+
+Prompts: 
+"Pra que serve o .cabal?"
+"Como eu implemento testes através do cabal?"
+(No geral, são alguns dos prompts que precisei para aprender a usar o cabal)
+
+Prompt:
+"O que eu preciso para implementar um banco de dados em formato .db em Haskell? Me traga algumas fontes para que eu possa estudar mais sobre"
+(Além desse prompt, utilizei bastante o ChatGPT para entender erros de sintaxe e acelerar meu aprendizado de SQL enquanto eu também tinha que manipulá-lo dentro do Haskell)
