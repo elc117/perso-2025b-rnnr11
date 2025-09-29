@@ -1,4 +1,5 @@
 Autor: João Pedro de Quadros Martins - Sistemas de Informação
+
 Caminhos de Entrega:
 
 Cálculos Descritivos -> ./Scotty/src/Classes.hs
