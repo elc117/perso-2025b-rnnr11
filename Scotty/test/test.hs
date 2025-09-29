@@ -100,10 +100,20 @@ groupCv dados = TestList $ testCv cvLst 0 []
         cvLst = map (\x -> cvData x (desvioData x $ varData x (mediaData x)) $ mediaData x) tableLst
         tableLst = map (retornaTabela) dados
 
+groupAll :: [[Float]] -> Test
+groupAll dataLst = TestList $ [cv, desvio, var, moda, median, media]
+    where
+        cv = groupCv dataLst
+        desvio = groupDesvio dataLst
+        var = groupVar dataLst
+        moda = groupModa dataLst
+        median = groupMedian dataLst
+        media = groupMedia dataLst
+
 -- Pega os dados
 consultaData :: [Int] -> Connection -> [[Float]] -> IO() -- Consulta as listas de dados a serem analisados no banco de dados
 consultaData [] conn dataLst = do
-    resultTestes <- runTestTT $ groupCv dataLst
+    resultTestes <- runTestTT $ groupAll dataLst
     print resultTestes
 
 consultaData (x:numGrupo) conn dataLst = do
